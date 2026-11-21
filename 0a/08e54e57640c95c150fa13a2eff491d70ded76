@@ -1,0 +1,49 @@
+.gitignore
+  s_aa03d11645fddd::t_d0ebf72882497b 1-2
+Cargo.lock
+  s_aa03d11645fddd::t_b2cff70c3b7abc 1-6192
+Cargo.toml
+  s_aa03d11645fddd::t_6fded6464fe30e 1-21
+README.md
+  s_aa03d11645fddd::t_20bd9d3b10fc91 1-31
+packaging/install.sh
+  s_aa03d11645fddd::t_f94b807cfcb429 1-9
+packaging/release.sh
+  s_aa03d11645fddd::t_dfbfe0d6b5cb0e 1-12
+packaging/ulap.desktop
+  s_aa03d11645fddd::t_ad934d38e2a322 1-9
+src/account.rs
+  s_aa03d11645fddd::t_403de512ea6cad 1-140
+src/app.rs
+  s_aa03d11645fddd::t_2fc32bd053a2e3 1-1113
+src/bin/ulap-account.rs
+  s_aa03d11645fddd::t_d8c5178f0cbf62 1-247
+src/config.rs
+  s_aa03d11645fddd::t_e5cf612620aade 1-87
+src/exif.rs
+  s_aa03d11645fddd::t_42a546270c3c4c 1-183
+src/main.rs
+  s_aa03d11645fddd::t_bf2b37fb4a0acb 1-18
+src/store.rs
+  s_aa03d11645fddd::t_1e6424b793ff29 1-220
+src/sync.rs
+  s_aa03d11645fddd::t_0cd33621189e2a 1-585
+src/telegram.rs
+  s_aa03d11645fddd::t_e92168b47c35a8 1-248
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "0a08e54e57640c95c150fa13a2eff491d70ded76",
+  "prompts": {},
+  "sessions": {
+    "s_aa03d11645fddd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7374cf4f-9030-4be7-8914-808acdefb2c4",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "satish.gumudavelli <satish.gumudavelli@kitchen365.com>"
+    }
+  }
+}
