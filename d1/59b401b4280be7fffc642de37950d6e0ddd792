@@ -1,0 +1,33 @@
+.github/workflows/release.yml
+  s_aa03d11645fddd::t_4ec99113bdfef5 1-46
+Cargo.lock
+  s_aa03d11645fddd::t_dd295b3a03a4b9 4883
+Cargo.toml
+  s_aa03d11645fddd::t_5c9b81b84f3753 3
+README.md
+  s_aa03d11645fddd::t_e8d075927de366 14-16
+src/account.rs
+  s_aa03d11645fddd::t_f75c44dc678d9e 51-55,59,85-87,89-92
+src/app.rs
+  s_aa03d11645fddd::t_d7ee95c3294ef2 200,207,211,407,415,427
+src/config.rs
+  s_aa03d11645fddd::t_1718204a8cad4a 67-73,92-97
+src/main.rs
+  s_aa03d11645fddd::t_c2122bea860bdc 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d159b401b4280be7fffc642de37950d6e0ddd792",
+  "prompts": {},
+  "sessions": {
+    "s_aa03d11645fddd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7374cf4f-9030-4be7-8914-808acdefb2c4",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "satish.gumudavelli <satish.gumudavelli@kitchen365.com>"
+    }
+  }
+}
