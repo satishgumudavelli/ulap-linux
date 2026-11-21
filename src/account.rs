@@ -48,12 +48,15 @@ pub fn session_path() -> PathBuf {
 }
 
 fn lock_down_dir() {
-    use std::os::unix::fs::PermissionsExt;
-    std::fs::set_permissions(crate::config::data_dir(), std::fs::Permissions::from_mode(0o700)).ok();
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        std::fs::set_permissions(crate::config::data_dir(), std::fs::Permissions::from_mode(0o700)).ok();
+    }
 }
 
 fn helper_path() -> PathBuf {
-    std::env::current_exe().ok().and_then(|p| p.parent().map(|d| d.join("ulap-account"))).unwrap_or_else(|| "ulap-account".into())
+    std::env::current_exe().ok().and_then(|p| p.parent().map(|d| d.join(format!("ulap-account{}", std::env::consts::EXE_SUFFIX)))).unwrap_or_else(|| "ulap-account".into())
 }
 
 impl Account {
@@ -79,14 +82,14 @@ impl Account {
         lock_down_dir();
         let st = Arc::new(Mutex::new(State::default()));
         let stdin = Arc::new(Mutex::new(None));
-        let mut child = match Command::new(helper_path())
-            .arg(api_id.to_string())
-            .arg(session_path())
-            .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
-            .stderr(Stdio::null())
-            .spawn()
+        let mut cmd = Command::new(helper_path());
+        cmd.arg(api_id.to_string()).arg(session_path()).stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::null());
+        #[cfg(windows)]
         {
+            use std::os::windows::process::CommandExt;
+            cmd.creation_flags(0x0800_0000); // CREATE_NO_WINDOW
+        }
+        let mut child = match cmd.spawn() {
             Ok(c) => c,
             Err(e) => {
                 {

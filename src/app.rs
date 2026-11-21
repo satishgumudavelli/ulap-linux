@@ -197,18 +197,18 @@ impl App {
             ui.heading("Create a new chat");
             ui.label("1. In Telegram, create a new private channel (or group) with any name, for example \"Ulap Photos\".");
             if ui.button("Open Telegram").clicked() {
-                std::process::Command::new("xdg-open").arg("https://web.telegram.org/").spawn().ok();
+                crate::config::open_external("https://web.telegram.org/");
             }
             ui.label("2. Add your bot to it as admin. Telegram asks you to pick the chat and confirm:");
             ui.horizontal(|ui| {
                 let ready = !user.is_empty();
                 if ui.add_enabled(ready, egui::Button::new("Add bot to a channel")).clicked() {
                     let url = format!("https://t.me/{user}?startchannel&admin=post_messages+edit_messages+delete_messages+pin_messages");
-                    std::process::Command::new("xdg-open").arg(url).spawn().ok();
+                    crate::config::open_external(url);
                 }
                 if ui.add_enabled(ready, egui::Button::new("Add bot to a group")).clicked() {
                     let url = format!("https://t.me/{user}?startgroup&admin=delete_messages+pin_messages");
-                    std::process::Command::new("xdg-open").arg(url).spawn().ok();
+                    crate::config::open_external(url);
                 }
             });
             ui.label("3. This window notices the new chat and adds it automatically.");
@@ -404,7 +404,7 @@ impl App {
 
     fn open_item(&self, i: &Item) {
         if i.status != "CLOUD_ONLY" {
-            std::process::Command::new("xdg-open").arg(&i.path).spawn().ok();
+            crate::config::open_external(&i.path);
             return;
         }
         // unsplit file over 20 MB: a bot cannot fetch it, so open its message in the Telegram app
@@ -412,7 +412,7 @@ impl App {
             let msg = i.message_id.filter(|m| *m > 0);
             match (self.cfg.chat_id.strip_prefix("-100"), msg) {
                 (Some(chan), Some(m)) => {
-                    std::process::Command::new("xdg-open").arg(format!("https://t.me/c/{chan}/{m}")).spawn().ok();
+                    crate::config::open_external(format!("https://t.me/c/{chan}/{m}"));
                     *self.notice.lock().unwrap() = format!("{} is over 20 MB: opening it in Telegram.", i.name);
                 }
                 _ => *self.notice.lock().unwrap() = format!("{} is over 20 MB: open it in the Telegram app.", i.name),
@@ -424,7 +424,7 @@ impl App {
         std::thread::spawn(move || match sync::download_for_open(&tg, &i) {
             Ok(p) => {
                 *n.lock().unwrap() = String::new();
-                std::process::Command::new("xdg-open").arg(p).spawn().ok();
+                crate::config::open_external(p);
             }
             Err(e) => *n.lock().unwrap() = format!("Open failed: {e}"),
         });

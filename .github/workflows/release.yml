@@ -1,0 +1,46 @@
+name: release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            name: linux-x86_64
+          - os: windows-latest
+            name: windows-x86_64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release
+      - name: Package (linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          n=ulap-${{ github.ref_name }}-${{ matrix.name }}
+          mkdir -p dist/$n
+          cp target/release/ulap-linux target/release/ulap-account packaging/ulap.png packaging/ulap.desktop packaging/install.sh dist/$n/
+          tar -C dist -czf dist/$n.tar.gz $n
+          (cd dist && sha256sum $n.tar.gz > $n.tar.gz.sha256)
+      - name: Package (windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $n = "ulap-${{ github.ref_name }}-${{ matrix.name }}"
+          New-Item -ItemType Directory -Force dist/$n | Out-Null
+          Copy-Item target/release/ulap-linux.exe, target/release/ulap-account.exe, README.md dist/$n/
+          Compress-Archive -Path dist/$n -DestinationPath dist/$n.zip
+          (Get-FileHash dist/$n.zip -Algorithm SHA256).Hash.ToLower() + "  $n.zip" | Set-Content dist/$n.zip.sha256
+      - name: Upload to release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view ${{ github.ref_name }} >/dev/null 2>&1 || gh release create ${{ github.ref_name }} --title "Ulap ${{ github.ref_name }}" --generate-notes
+          gh release upload ${{ github.ref_name }} dist/*.tar.gz dist/*.zip dist/*.sha256 --clobber

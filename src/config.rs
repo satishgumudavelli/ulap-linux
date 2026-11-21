@@ -62,11 +62,15 @@ impl Config {
     }
 
     pub fn save(&self) -> std::io::Result<()> {
-        use std::os::unix::fs::PermissionsExt;
         let p = path();
         std::fs::write(&p, serde_json::to_string_pretty(self).unwrap())?;
-        // holds bot tokens: owner-only
-        std::fs::set_permissions(&p, std::fs::Permissions::from_mode(0o600))
+        // holds bot tokens: owner-only (Windows keeps per-user profile ACLs)
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            std::fs::set_permissions(&p, std::fs::Permissions::from_mode(0o600))?;
+        }
+        Ok(())
     }
 
     pub fn chat_name(&self) -> String {
@@ -84,4 +88,10 @@ mod dirs {
             .map(|d| d.home_dir().to_path_buf())
             .unwrap_or_else(|| ".".into())
     }
+}
+
+/// Open a file or URL with the system default app.
+pub fn open_external(target: impl AsRef<std::ffi::OsStr>) {
+    let opener = if cfg!(windows) { "explorer" } else if cfg!(target_os = "macos") { "open" } else { "xdg-open" };
+    std::process::Command::new(opener).arg(target).spawn().ok();
 }

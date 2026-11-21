@@ -11,7 +11,9 @@ Rust + egui. Compatible with the Android app's chunked-file layout and pinned in
 - Optional "Strip location" (removes GPS from JPEGs before upload, off by default)
 
 ## Install (prebuilt)
-Download the tarball from Releases, then:
+**Windows:** download the `-windows-x86_64.zip` from Releases, unzip, run `ulap-linux.exe` (keep `ulap-account.exe` beside it). Unsigned, so SmartScreen may warn.
+
+**Linux:** download the tarball from Releases, then:
 
     tar xzf ulap-linux-*.tar.gz && cd ulap-linux-*/ && ./install.sh
 
