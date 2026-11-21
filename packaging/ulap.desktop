@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Ulap
+Comment=Back up photos and videos to your Telegram chat
+Exec=/home/cp/.local/bin/ulap-linux
+Icon=ulap
+Terminal=false
+Categories=Utility;
+StartupWMClass=Ulap
