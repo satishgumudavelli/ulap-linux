@@ -13,7 +13,9 @@ Rust + egui. Compatible with the Android app's chunked-file layout and pinned in
 ## Install (prebuilt)
 **Windows:** download the `-windows-x86_64.zip` from Releases, unzip, run `ulap-linux.exe` (keep `ulap-account.exe` beside it). Unsigned, so SmartScreen may warn.
 
-**Linux:** download the tarball from Releases, then:
+**Debian/Ubuntu:** download the `.deb` from Releases, then `sudo apt install ./ulap-linux_*.deb`.
+
+**Other Linux:** download the tarball from Releases, then:
 
     tar xzf ulap-linux-*.tar.gz && cd ulap-linux-*/ && ./install.sh
 
